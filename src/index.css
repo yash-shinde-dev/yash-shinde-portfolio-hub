@@ -94,6 +94,25 @@
   ::-webkit-scrollbar-thumb:hover {
     background: theme('colors.portfolio.indigo');
   }
+  
+  /* Hide default cursor when custom cursor is active */
+  @media (min-width: 768px) {
+    html:not(.touch) {
+      cursor: none !important;
+    }
+    
+    html:not(.touch) a,
+    html:not(.touch) button,
+    html:not(.touch) .cursor-pointer,
+    html:not(.touch) [role="button"] {
+      cursor: none !important;
+    }
+  }
+  
+  /* Ensure all interactive elements have cursor pointer for mobile/touch devices */
+  a, button, .cursor-pointer, [role="button"] {
+    cursor: pointer;
+  }
 }
 
 @layer components {
@@ -171,5 +190,10 @@
   
   .cta-button {
     @apply relative overflow-hidden bg-gradient-to-r from-portfolio-blue to-portfolio-indigo text-white font-medium px-6 py-3 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 before:content-[''] before:absolute before:inset-0 before:bg-white before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-20;
+  }
+  
+  /* Magnetic effect for elements */
+  .magnetic-effect {
+    @apply transition-transform duration-200 ease-out;
   }
 }

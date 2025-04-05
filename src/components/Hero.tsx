@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <a href="/Yash_Shinde_Resume.pdf" download className="no-underline group">
+              <a href="/Yash_Shinde_Resume.pdf" download className="no-underline group cursor-pointer">
                 <Button variant="default" size="lg" className="cta-button group-hover:scale-105">
                   <Download className="mr-2 h-5 w-5 transition-transform group-hover:translate-y-[-2px]" />
                   Download Resume
@@ -111,7 +111,7 @@ const Hero: React.FC = () => {
                 smooth={true}
                 duration={500}
                 offset={-70}
-                className="no-underline group"
+                className="no-underline group cursor-pointer"
               >
                 <Button variant="outline" size="lg" className="rounded-full text-base border-2 group-hover:bg-portfolio-blue/10 transition-all duration-300">
                   <Send className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -125,7 +125,7 @@ const Hero: React.FC = () => {
                 href="https://github.com/yasssh-shinde"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors cursor-pointer"
                 aria-label="GitHub"
               >
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -136,7 +136,7 @@ const Hero: React.FC = () => {
                 href="https://linkedin.com/in/yasssh-shinde"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors cursor-pointer"
                 aria-label="LinkedIn"
               >
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ const Hero: React.FC = () => {
               </a>
               <a
                 href="mailto:yashshinde.dev@gmail.com"
-                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-portfolio-blue dark:hover:text-blue-400 transition-colors cursor-pointer"
                 aria-label="Email"
               >
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -159,7 +159,7 @@ const Hero: React.FC = () => {
             <div className="relative w-64 h-64 mx-auto md:w-80 md:h-80">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-portfolio-purple to-portfolio-pink animate-gradient-animation"></div>
               <img
-                src="https://via.placeholder.com/400x400.png?text=Yash+Shinde"
+                src="/yash-profile.jpg"
                 alt="Yash Shinde"
                 className="absolute inset-1 rounded-full object-cover w-[calc(100%-8px)] h-[calc(100%-8px)] animate-pulse-glow"
               />
@@ -171,16 +171,16 @@ const Hero: React.FC = () => {
               {/* Tech icons orbiting */}
               {!isMobile && (
                 <>
-                  <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float">
+                  <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float cursor-pointer">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" className="w-8 h-8" alt="React" />
                   </div>
-                  <div className="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-2000">
+                  <div className="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-2000 cursor-pointer">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" className="w-8 h-8" alt="Node.js" />
                   </div>
-                  <div className="absolute left-[-10px] top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-4000">
+                  <div className="absolute left-[-10px] top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-4000 cursor-pointer">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" className="w-8 h-8" alt="MongoDB" />
                   </div>
-                  <div className="absolute right-[-10px] top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-6000">
+                  <div className="absolute right-[-10px] top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg animate-float animation-delay-6000 cursor-pointer">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" className="w-8 h-8" alt="JavaScript" />
                   </div>
                 </>

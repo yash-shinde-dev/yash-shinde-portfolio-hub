@@ -82,7 +82,7 @@ const About: React.FC = () => {
                     <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3">My tech stack</h4>
                     <div className="flex flex-wrap gap-3">
                       {["JavaScript", "React", "Node.js", "Express", "MongoDB", "HTML5", "CSS3", "Tailwind CSS"].map((tech, i) => (
-                        <span key={tech} className="inline-block bg-gray-100 dark:bg-gray-800 rounded-full px-3 py-1 text-sm text-gray-700 dark:text-gray-300 animate-fade-in-up" style={{ animationDelay: `${0.2 + (i * 0.1)}s` }}>
+                        <span key={tech} className="inline-block bg-gray-100 dark:bg-gray-800 rounded-full px-3 py-1 text-sm text-gray-700 dark:text-gray-300 animate-fade-in-up cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" style={{ animationDelay: `${0.2 + (i * 0.1)}s` }}>
                           {tech}
                         </span>
                       ))}
@@ -101,7 +101,7 @@ const About: React.FC = () => {
                 <div className="relative w-full pb-[100%] mb-6">
                   <div className="absolute inset-0 rounded-full overflow-hidden border-4 border-blue-200 dark:border-blue-800">
                     <img
-                      src="https://via.placeholder.com/400x400.png?text=Yash+Shinde"
+                      src="/yash-profile.jpg"
                       alt="Yash Shinde"
                       className="object-cover w-full h-full animate-pulse-glow"
                     />
@@ -114,10 +114,10 @@ const About: React.FC = () => {
                   </div>
                   {!isMobile && (
                     <>
-                      <div className="absolute top-[10%] right-[5%] w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center z-10 animate-float">
+                      <div className="absolute top-[10%] right-[5%] w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center z-10 animate-float cursor-pointer">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" className="w-6 h-6" alt="React" />
                       </div>
-                      <div className="absolute bottom-[15%] left-[5%] w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center z-10 animate-float animation-delay-2000">
+                      <div className="absolute bottom-[15%] left-[5%] w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center z-10 animate-float animation-delay-2000 cursor-pointer">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" className="w-6 h-6" alt="Node.js" />
                       </div>
                     </>
@@ -128,14 +128,14 @@ const About: React.FC = () => {
                   Personal Information
                 </h3>
                 <ul className="space-y-4">
-                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors">
+                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors cursor-pointer">
                     <MapPin className="h-5 w-5 text-portfolio-blue dark:text-blue-400 mr-3 mt-0.5 group-hover:scale-110 transition-transform" />
                     <div>
                       <p className="font-medium text-gray-700 dark:text-gray-300">Location</p>
                       <p className="text-gray-600 dark:text-gray-400">Pune, Maharashtra, India</p>
                     </div>
                   </li>
-                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors">
+                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors cursor-pointer">
                     <Mail className="h-5 w-5 text-portfolio-blue dark:text-blue-400 mr-3 mt-0.5 group-hover:scale-110 transition-transform" />
                     <div>
                       <p className="font-medium text-gray-700 dark:text-gray-300">Email</p>
@@ -147,7 +147,7 @@ const About: React.FC = () => {
                       </a>
                     </div>
                   </li>
-                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors">
+                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors cursor-pointer">
                     <Phone className="h-5 w-5 text-portfolio-blue dark:text-blue-400 mr-3 mt-0.5 group-hover:scale-110 transition-transform" />
                     <div>
                       <p className="font-medium text-gray-700 dark:text-gray-300">Phone</p>
@@ -159,7 +159,7 @@ const About: React.FC = () => {
                       </a>
                     </div>
                   </li>
-                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors">
+                  <li className="flex items-start group hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors cursor-pointer">
                     <FileText className="h-5 w-5 text-portfolio-blue dark:text-blue-400 mr-3 mt-0.5 group-hover:scale-110 transition-transform" />
                     <div>
                       <p className="font-medium text-gray-700 dark:text-gray-300">Resume</p>
@@ -181,7 +181,7 @@ const About: React.FC = () => {
                       href="https://github.com/yasssh-shinde"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group"
+                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group cursor-pointer"
                       aria-label="GitHub"
                     >
                       <Github className="h-5 w-5 group-hover:scale-110 transition-transform" />
@@ -190,21 +190,21 @@ const About: React.FC = () => {
                       href="https://linkedin.com/in/yasssh-shinde"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group"
+                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group cursor-pointer"
                       aria-label="LinkedIn"
                     >
                       <Linkedin className="h-5 w-5 group-hover:scale-110 transition-transform" />
                     </a>
                     <a
                       href="mailto:yashshinde.dev@gmail.com"
-                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group"
+                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group cursor-pointer"
                       aria-label="Email"
                     >
                       <Mail className="h-5 w-5 group-hover:scale-110 transition-transform" />
                     </a>
                     <a
                       href="tel:+919404107465"
-                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group"
+                      className="bg-gray-100 dark:bg-gray-800 hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 p-2 rounded-full transition-colors group cursor-pointer"
                       aria-label="Phone"
                     >
                       <Phone className="h-5 w-5 group-hover:scale-110 transition-transform" />
