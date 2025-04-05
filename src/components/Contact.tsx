@@ -1,14 +1,16 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Contact: React.FC = () => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,6 +18,47 @@ const Contact: React.FC = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  // Mouse move effect for card (desktop only)
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (isMobile || !cardRef.current) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const card = cardRef.current;
+      if (!card) return;
+      
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+    
+    const handleMouseLeave = () => {
+      if (cardRef.current) {
+        cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      }
+    };
+    
+    const card = cardRef.current;
+    card.addEventListener('mousemove', handleMouseMove);
+    card.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      card.removeEventListener('mousemove', handleMouseMove);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isMobile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -39,6 +82,12 @@ const Contact: React.FC = () => {
         message: ""
       });
       setIsSubmitting(false);
+      setIsSubmitted(true);
+      
+      // Reset submitted state after showing success
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
     }, 1500);
   };
 
@@ -47,25 +96,34 @@ const Contact: React.FC = () => {
       icon: <Mail className="h-6 w-6 text-portfolio-blue dark:text-blue-400" />,
       title: "Email",
       content: "yashshinde.dev@gmail.com",
-      link: "mailto:yashshinde.dev@gmail.com"
+      link: "mailto:yashshinde.dev@gmail.com",
+      color: "from-blue-500 to-blue-600"
     },
     {
-      icon: <Phone className="h-6 w-6 text-portfolio-blue dark:text-blue-400" />,
+      icon: <Phone className="h-6 w-6 text-portfolio-purple dark:text-purple-400" />,
       title: "Phone",
       content: "+91-940-410-7465",
-      link: "tel:+919404107465"
+      link: "tel:+919404107465",
+      color: "from-purple-500 to-purple-600"
     },
     {
-      icon: <MapPin className="h-6 w-6 text-portfolio-blue dark:text-blue-400" />,
+      icon: <MapPin className="h-6 w-6 text-portfolio-indigo dark:text-indigo-400" />,
       title: "Location",
       content: "Pune, Maharashtra, India",
-      link: "https://maps.google.com/?q=Pune,Maharashtra,India"
+      link: "https://maps.google.com/?q=Pune,Maharashtra,India",
+      color: "from-indigo-500 to-indigo-600"
     }
   ];
 
   return (
-    <section id="contact" className="py-20 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <section id="contact" className="py-20 bg-white dark:bg-gray-900 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-20 pointer-events-none">
+        <div className="absolute top-20 right-20 w-60 h-60 rounded-full bg-blue-500 mix-blend-multiply filter blur-3xl animate-blob"></div>
+        <div className="absolute bottom-20 left-20 w-60 h-60 rounded-full bg-purple-500 mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <h2 className="section-heading">Get In Touch</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-10 text-center max-w-3xl mx-auto">
           Have a question or want to work together? Feel free to contact me through the form below or using my contact information.
@@ -73,98 +131,109 @@ const Contact: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <Card className="animate-fade-in-up">
+            <Card className="animate-fade-in-up overflow-hidden" ref={cardRef}>
+              <div className="h-2 w-full bg-gradient-to-r from-portfolio-blue via-portfolio-purple to-portfolio-indigo"></div>
               <CardContent className="p-6">
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Your Name
+                {isSubmitted ? (
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4 animate-bounce-in">
+                      <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Message Sent!</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+                      Thank you for reaching out. I'll get back to you as soon as possible.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} ref={formRef}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div className="group">
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 group-focus-within:text-portfolio-blue dark:group-focus-within:text-blue-400 transition-colors">
+                          Your Name
+                        </label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          required
+                          className="w-full border-gray-300 dark:border-gray-700 focus:border-portfolio-blue dark:focus:border-blue-400 transition-colors"
+                        />
+                      </div>
+                      <div className="group">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 group-focus-within:text-portfolio-blue dark:group-focus-within:text-blue-400 transition-colors">
+                          Your Email
+                        </label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="johndoe@example.com"
+                          required
+                          className="w-full border-gray-300 dark:border-gray-700 focus:border-portfolio-blue dark:focus:border-blue-400 transition-colors"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="mb-6 group">
+                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 group-focus-within:text-portfolio-blue dark:group-focus-within:text-blue-400 transition-colors">
+                        Subject
                       </label>
                       <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
+                        id="subject"
+                        name="subject"
+                        value={formData.subject}
                         onChange={handleChange}
-                        placeholder="John Doe"
+                        placeholder="How can I help you?"
                         required
-                        className="w-full"
+                        className="w-full border-gray-300 dark:border-gray-700 focus:border-portfolio-blue dark:focus:border-blue-400 transition-colors"
                       />
                     </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Your Email
+                    
+                    <div className="mb-6 group">
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 group-focus-within:text-portfolio-blue dark:group-focus-within:text-blue-400 transition-colors">
+                        Message
                       </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
+                      <Textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
                         onChange={handleChange}
-                        placeholder="johndoe@example.com"
+                        placeholder="Your message here..."
                         required
-                        className="w-full"
+                        className="min-h-[150px] w-full border-gray-300 dark:border-gray-700 focus:border-portfolio-blue dark:focus:border-blue-400 transition-colors"
                       />
                     </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Subject
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      placeholder="How can I help you?"
-                      required
-                      className="w-full"
-                    />
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Your message here..."
-                      required
-                      className="min-h-[150px] w-full"
-                    />
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full md:w-auto"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending...
-                      </span>
-                    ) : (
-                      <span className="flex items-center">
-                        <Send className="h-4 w-4 mr-2" />
-                        Send Message
-                      </span>
-                    )}
-                  </Button>
-                </form>
+                    
+                    <Button 
+                      type="submit" 
+                      className="w-full md:w-auto cta-button"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center">
+                          <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                          Sending...
+                        </span>
+                      ) : (
+                        <span className="flex items-center">
+                          <Send className="h-4 w-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                          Send Message
+                        </span>
+                      )}
+                    </Button>
+                  </form>
+                )}
               </CardContent>
             </Card>
           </div>
           
           <div>
-            <Card className="h-full animate-fade-in-up animation-delay-300">
+            <Card className="h-full animate-fade-in-up animation-delay-300 overflow-hidden">
+              <div className="h-2 w-full bg-gradient-to-r from-portfolio-indigo via-portfolio-purple to-portfolio-blue"></div>
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-200">
                   Contact Information
@@ -177,11 +246,13 @@ const Contact: React.FC = () => {
                       href={info.link}
                       target={info.title === "Location" ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className="flex items-start hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors"
+                      className="flex items-start hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors group"
                     >
-                      <div className="flex-shrink-0 mt-1">{info.icon}</div>
+                      <div className={`flex-shrink-0 p-3 rounded-full bg-gradient-to-r ${info.color} text-white transform group-hover:scale-110 transition-transform`}>
+                        {info.icon}
+                      </div>
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+                        <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 group-hover:text-portfolio-blue dark:group-hover:text-blue-400 transition-colors">
                           {info.title}
                         </h4>
                         <p className="text-gray-600 dark:text-gray-400">{info.content}</p>
@@ -199,7 +270,7 @@ const Contact: React.FC = () => {
                       href="https://github.com/yasssh-shinde"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 transition-colors"
+                      className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 transition-colors transform hover:scale-110"
                       aria-label="GitHub"
                     >
                       <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -210,7 +281,7 @@ const Contact: React.FC = () => {
                       href="https://linkedin.com/in/yasssh-shinde"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 transition-colors"
+                      className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full hover:bg-portfolio-blue hover:text-white dark:hover:bg-blue-600 transition-colors transform hover:scale-110"
                       aria-label="LinkedIn"
                     >
                       <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -219,6 +290,20 @@ const Contact: React.FC = () => {
                     </a>
                   </div>
                 </div>
+                
+                {/* 3D effect decoration */}
+                {!isMobile && (
+                  <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+                    <div className="relative h-20 w-full overflow-hidden rounded-lg">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 opacity-80"></div>
+                      <div className="absolute -bottom-5 -left-5 w-24 h-24 bg-white/20 rounded-full"></div>
+                      <div className="absolute -top-5 -right-5 w-24 h-24 bg-white/20 rounded-full"></div>
+                      <div className="absolute inset-0 flex items-center justify-center text-white font-medium">
+                        <p className="text-sm tracking-wider">Let's build something amazing!</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
