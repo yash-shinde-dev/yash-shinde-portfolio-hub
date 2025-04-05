@@ -1,15 +1,35 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const CustomCursor: React.FC = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [hidden, setHidden] = useState(true);
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
   const [clicked, setClicked] = useState(false);
   const [linkHovered, setLinkHovered] = useState(false);
-
+  const [hidden, setHidden] = useState(true);
+  
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      const { clientX, clientY } = e;
+      
+      const mousePosX = clientX;
+      const mousePosY = clientY;
+      
+      if (cursorDotRef.current) {
+        cursorDotRef.current.style.top = `${mousePosY}px`;
+        cursorDotRef.current.style.left = `${mousePosX}px`;
+      }
+      
+      if (cursorRingRef.current) {
+        // Add a slight delay to the ring for a smoother trailing effect
+        setTimeout(() => {
+          if (cursorRingRef.current) {
+            cursorRingRef.current.style.top = `${mousePosY}px`;
+            cursorRingRef.current.style.left = `${mousePosX}px`;
+          }
+        }, 50);
+      }
+      
       setHidden(false);
     };
 
@@ -58,27 +78,28 @@ const CustomCursor: React.FC = () => {
   return (
     <>
       <div
-        className={`fixed w-5 h-5 rounded-full pointer-events-none z-50 transition-transform mix-blend-difference ${
+        ref={cursorDotRef}
+        className={`fixed w-5 h-5 rounded-full pointer-events-none z-50 transition-opacity mix-blend-difference ${
           hidden ? "opacity-0" : "opacity-100"
         } ${clicked ? "scale-75" : ""}`}
         style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
           transform: `translate(-50%, -50%) scale(${cursorScale})`,
           backgroundColor: "white",
+          transition: "opacity 0.3s ease, transform 0.2s ease",
+          willChange: "transform, opacity"
         }}
       ></div>
       <div
-        className={`fixed rounded-full pointer-events-none z-50 transition-all duration-200 ease-out mix-blend-difference ${
+        ref={cursorRingRef}
+        className={`fixed rounded-full pointer-events-none z-50 transition-all duration-300 ease-out mix-blend-difference ${
           hidden ? "opacity-0" : "opacity-100"
         } ${linkHovered ? "bg-white scale-110" : "bg-transparent border-2 border-white"}`}
         style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
           transform: `translate(-50%, -50%) scale(${cursorScale})`,
           width: `${cursorSize}px`,
           height: `${cursorSize}px`,
-          transitionDuration: "150ms",
+          transition: "width 0.3s ease, height 0.3s ease, transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease",
+          willChange: "transform, width, height, background-color, opacity"
         }}
       ></div>
     </>
